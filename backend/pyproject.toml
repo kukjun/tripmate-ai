@@ -9,8 +9,61 @@ authors = [
     { name = "TripMate AI Team" }
 ]
 
+dependencies = [
+    # LLM & LangChain
+    "langchain>=0.1.0",
+    "langgraph>=0.0.20",
+    "langchain-openai>=0.0.5",
+    "openai>=1.0.0",
+
+    # Web Framework
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "python-multipart>=0.0.6",
+
+    # Data & Validation
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+
+    # Utils
+    "python-dotenv>=1.0.0",
+    "httpx>=0.25.0",
+
+    # UI (Phase 1)
+    "streamlit>=1.29.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.3",
+    "pytest-asyncio>=0.21.1",
+    "pytest-cov>=4.1.0",
+    "black>=23.11.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "mypy>=1.7.0",
+    "ruff>=0.1.0",
+]
+scraping = [
+    "playwright>=1.40.0",
+]
+
 [project.urls]
 Homepage = "https://github.com/your-username/tripmate-ai"
+
+# ===========================
+# uv Configuration
+# ===========================
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.4.3",
+    "pytest-asyncio>=0.21.1",
+    "pytest-cov>=4.1.0",
+    "black>=23.11.0",
+    "isort>=5.12.0",
+    "ruff>=0.1.0",
+    "mypy>=1.7.0",
+]
 
 # ===========================
 # Black Formatter
@@ -43,6 +96,26 @@ line_length = 88
 skip_gitignore = true
 known_first_party = ["src"]
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+# ===========================
+# Ruff (Fast Linter)
+# ===========================
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+select = ["E", "F", "I", "N", "W", "B", "UP"]
+ignore = ["E501"]
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "build",
+    "dist",
+]
+
+[tool.ruff.isort]
+known-first-party = ["src"]
 
 # ===========================
 # pytest
@@ -83,14 +156,11 @@ ignore_missing_imports = true
 exclude = ["venv", ".venv", "tests"]
 
 # ===========================
-# flake8 Configuration
-# ===========================
-# Note: flake8 doesn't support pyproject.toml natively
-# Use setup.cfg or .flake8 file instead
-
-# ===========================
 # Build System
 # ===========================
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]

@@ -61,10 +61,13 @@ async def health_check():
 
 
 # ===========================
-# API Routes (TODO: Phase 1)
+# API Routes
 # ===========================
-# from src.api.chat import router as chat_router
-# app.include_router(chat_router, prefix="/api")
+from src.api import chat_router, plan_router, sessions_router
+
+app.include_router(chat_router, prefix="/api")
+app.include_router(plan_router, prefix="/api")
+app.include_router(sessions_router, prefix="/api")
 
 
 if __name__ == "__main__":
